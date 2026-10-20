@@ -264,11 +264,15 @@ def build_argparser():
     ap.add_argument("--stats-every", type=float, default=0.0,
                     help="每 N 秒打印一次统计；0 表示关闭")
     ap.add_argument("--csv", help="把逐秒统计追加写入该 CSV")
+    ap.add_argument("--hdc", help="HDC executable for managed USB mapping recovery")
+    ap.add_argument("--transport-state", help="Managed transport-state.json; requires --hdc")
     return ap
 
 
 def main():
     args = build_argparser().parse_args()
+    if bool(args.hdc) != bool(args.transport_state):
+        raise SystemExit('--hdc and --transport-state must be used together')
     if args.control_port == args.tunnel_port:
         raise SystemExit("control-port must differ from tunnel-port")
     if args.hi_res_timer:
@@ -292,10 +296,18 @@ def main():
 
     relay = Relay(args.tunnel_port, args.offset, args.bind, tls_ctx,
                   args.stats_every, args.csv, args.control_port)
+    guard = None
+    if args.hdc:
+        from mapping_guard import MappingGuard
+        guard = MappingGuard(args.hdc, args.transport_state)
+        guard.start()
     try:
         asyncio.run(relay.start())
     except KeyboardInterrupt:
         pass
+    finally:
+        if guard:
+            guard.stop()
     print("[relay] exit", flush=True)
 
 

@@ -1,4 +1,4 @@
-param(
+﻿param(
     [ValidateSet('Status','Usb','Lan')][string]$Action = 'Status',
     [string]$SunshineRoot = 'C:\Program Files\Sunshine',
     [string]$DeviceId = '',
@@ -182,7 +182,7 @@ function Stop-ManagedRelay {
 }
 function Start-ManagedRelay([string]$Python) {
     [IO.Directory]::CreateDirectory($DataRoot) | Out-Null
-    $process = Start-Process -FilePath $Python -ArgumentList @('-X','utf8',('"'+$script:RelayPath+'"'),'--control-port','47996','--hi-res-timer','--stats-every','2') `
+    $process = Start-Process -FilePath $Python -ArgumentList @('-X','utf8',('"'+$script:RelayPath+'"'),'--control-port','47996','--hi-res-timer','--stats-every','2','--hdc',('"'+$script:Hdc+'"'),'--transport-state',('"'+$script:StatePath+'"')) `
         -WorkingDirectory $PSScriptRoot -WindowStyle Hidden -PassThru `
         -RedirectStandardOutput (Join-Path $DataRoot 'relay_run.log') -RedirectStandardError (Join-Path $DataRoot 'relay_run.err')
     for ($i=0; $i -lt 30; $i++) {

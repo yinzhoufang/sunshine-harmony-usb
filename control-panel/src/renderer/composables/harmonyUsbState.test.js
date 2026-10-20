@@ -13,6 +13,13 @@ test('network mode reports a stopped host instead of a healthy connection', () =
   assert.equal(harmonyConnectionState({ enabled: false, server_ready: false }), 'hostOffline')
   assert.equal(harmonyConnectionState({ enabled: false, server_ready: true }), 'network')
 })
+test('missing mappings show recovery while the managed relay is running', () => {
+  const status = { enabled: true, hdc_available: true, device_connected: true,
+    relay_ready: true, healthy: false, mappings: 0 }
+  assert.equal(harmonyConnectionState(status), 'recovering')
+  assert.equal(harmonyConnectionState({ ...status, mappings: 7 }), 'incomplete')
+  assert.equal(harmonyConnectionState({ ...status, relay_ready: false }), 'incomplete')
+})
 test('rollback and canceled elevation have distinct recovery instructions', () => {
   assert.equal(harmonyErrorKey('SWITCH_ROLLED_BACK: HDC_FAILED'), 'SWITCH_ROLLED_BACK')
   assert.equal(harmonyErrorKey('USB_UAC_CANCELLED: operation canceled'), 'USB_UAC_CANCELLED')

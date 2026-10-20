@@ -1129,7 +1129,7 @@ export const zh = {
       cableHelp: '请使用可传输数据的 USB 线，并在平板上允许调试连接。串流时保持 USB 隧道伴侣可见。',
       enabledToast: '已切换到鸿蒙数据线模式，请重新连接 Moonlight。',
       disabledToast: '已恢复网络传输，请使用电脑的局域网地址连接。',
-      states: { unknown: '正在读取状态', network: '网络传输', hostOffline: 'Sunshine 未就绪', hdcMissing: '需要调试工具', waiting: '等待平板连接', connected: '数据线已就绪', incomplete: '数据线连接未就绪' },
+      states: { unknown: '正在读取状态', network: '网络传输', hostOffline: 'Sunshine 未就绪', hdcMissing: '需要调试工具', waiting: '等待平板连接', connected: '数据线已就绪', recovering: '正在恢复连接', incomplete: '数据线连接未就绪' },
       stages: { authorizing: '等待 Windows 管理员授权…', checking: '检查平板和运行环境…', stopping: '正在结束当前串流…', configuring: '正在切换传输方式…', starting: '正在启动 Sunshine…', mapping: '正在连接平板…', relay: '正在启动数据线传输…', rollback: '切换未完成，正在恢复原模式…', ready: '切换完成' },
       errors: { BRIDGE_MISSING: '平板上尚未安装 USB 隧道伴侣，请先安装配套应用。', HDC_MISSING: '未找到 HDC。请安装 DevEco Studio 调试工具后刷新。', USB_NO_DEVICE: '未检测到平板。请连接 USB 线，并在平板上允许调试。', USB_SELECT_DEVICE: '连接了多台设备，请选择要串流的平板。', USB_DEVICE_OFFLINE: '所选平板已断开，请检查数据线后重试。', PYTHON_MISSING: '未找到中继运行环境，请安装 Python 3 后重试。', RELAY_PORT_CONFLICT: '传输端口被其他程序占用，未关闭该程序。', USB_UAC_CANCELLED: '管理员授权已取消，传输方式没有改变。', USB_RESOURCES_MISSING: '数据线组件不完整，请重新安装此控制面板组件包。', SWITCH_ROLLED_BACK: '切换未完成，已恢复原传输方式。请查看原因后重试。', ROLLBACK_FAILED: '自动恢复未完成，请检查 Sunshine 服务并重试。', SWITCH_BUSY: '另一次切换正在进行，请稍候。', unknown: '暂时无法完成操作，请查看详细原因或刷新重试。' },
     },

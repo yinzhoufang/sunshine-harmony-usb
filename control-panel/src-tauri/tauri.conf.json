@@ -1,7 +1,7 @@
 {
   "$schema": "https://schema.tauri.app/config/2",
   "productName": "Sunshine GUI",
-  "version": "0.5.9+usb.2",
+  "version": "0.5.9+usb.3",
   "identifier": "com.212333.app",
   "build": {
     "beforeDevCommand": "npm run dev:renderer",

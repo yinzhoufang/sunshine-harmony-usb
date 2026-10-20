@@ -74,6 +74,7 @@ async function refresh() {
     const result = await invoke('harmony_usb_get_status')
     if (disposed || request !== generation) return
     status.value = result
+    error.value = ''
     if (!selectedDevice.value || !result.devices?.includes(selectedDevice.value)) selectedDevice.value = result.device_id || ''
   } catch (e) {
     if (!disposed && request === generation) error.value = String(e)
@@ -93,6 +94,7 @@ async function switchMode(enabled) {
     const result = await invoke('harmony_usb_set_mode', { enabled, deviceId: selectedDevice.value || null })
     if (disposed) return
     status.value = result
+    error.value = ''
     ElMessage.success(enabled ? text.value.enabledToast : text.value.disabledToast)
   } catch (e) {
     if (!disposed) error.value = String(e)
