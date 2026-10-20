@@ -1,31 +1,25 @@
-# 开发构建
+# 平板桥构建与安装
 
-## Windows 控制面板
+本分支工程位于根目录，源码由主项目的 pad/ 目录整理而来，运行代码保持一致。电脑端见 [pc 分支](https://github.com/yinzhoufang/sunshine-harmony-usb/tree/pc)。
 
-先按 `control-panel/README.md` 准备上游项目的 Node、Rust、Windows C++ 构建工具及 WebView2 环境。
+## 构建步骤
 
-在 `control-panel` 目录执行：
+1. 在本分支使用 Code → Download ZIP 下载并解压工程，或用 Git 克隆 pad 分支。
+2. 用 DevEco Studio 打开工程根目录，安装项目需要的 HarmonyOS SDK 与 Native 工具链，管理并安装项目依赖。
+3. 使用自己的开发者账号和设备配置签名。仓库的 build-profile.json5 不含原开发者私有签名，不能直接复用别人的开发签名 HAP。
+4. 构建 entry 模块的 HAP，连接自己的平板，允许 USB 调试并安装。
+5. 启动 USB 隧道伴侣，配合电脑端鸿蒙数据线模式与 Moonlight 使用。
 
-```powershell
-npm ci
-npm run test:renderer
-npm run build:renderer
-cargo test --locked --manifest-path src-tauri/Cargo.toml virtual_display
-cargo build --release --locked --manifest-path src-tauri/Cargo.toml
-```
+原生入口为 entry/src/main/cpp/CMakeLists.txt。若命令行构建提示找不到 Java，请配置 JAVA_HOME 并将其 bin 加入 PATH。
 
-请以 `control-panel/package.json` 中的脚本为准。最终程序位于 `control-panel/src-tauri/target/release/sunshine-gui.exe`。
+Windows 上若原生类型依赖无法建立链接，可将 entry/src/main/cpp/types/libusbtunnel 复制到 entry/oh_modules/libusbtunnel.so 后重试构建。
 
-制作安装包时，把最终 EXE 与 `installer/` 的文件放在同一个目录，重新生成 `manifest.json` 中 EXE 及 `harmony-usb/` 运行文件的 SHA-256。修改程序后不能继续使用旧清单。
+包名 com.chenfang.usbtunnel 同时用于电脑脚本检查桥是否已安装；改包名时需同步修改电脑脚本。
 
-安装器会请求 Windows 管理员授权，验证适配版本和清单后备份并更新面板。不要直接覆盖正在运行的 EXE。
+## 签名与使用范围
 
-## HarmonyOS 平板桥
+当前未提供通用已签名安装包，开发签名通常需要登记目标设备。请在自己的开发环境配置签名，不要提交私钥、证书、设备名单或个人签名配置。
 
-用 DevEco Studio 打开 `pad/`。本仓库去除了开发者私有签名配置、设备列表、私钥及证书，需要使用自己的开发者账号和设备重新配置签名。
+已验证 MatePad Pro 12.2（MRO-W00）与 HarmonyOS 6.1.1；其他设备尚未验证。后台冻结 / 回收仍是已知限制，当前建议以分屏或悬浮窗保持桥可见。
 
-构建前安装项目所需的 HarmonyOS SDK、Native 工具链和依赖。通过 DevEco 管理依赖并构建；原生入口为 `entry/src/main/cpp/CMakeLists.txt`。如果命令行构建提示找不到 Java，请配置 `JAVA_HOME` 并将其 `bin` 加入 PATH。
-
-平板源码里的包名 `com.chenfang.usbtunnel` 同时用于电脑模式脚本检查桥是否已安装；若改包名，需要同步修改脚本。
-
-桥的设计、依赖和当前限制见 `pad/README.md`。请勿把个人生成的签名配置、证书、私钥、设备名单或已绑定开发设备的 HAP 提交到公开仓库。
+协议见 [PROTOCOL.md](PROTOCOL.md)，已验证范围见 [VALIDATION.md](VALIDATION.md)。
