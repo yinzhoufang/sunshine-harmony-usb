@@ -1,5 +1,14 @@
 # Sunshine 鸿蒙 USB 串流与虚拟显示器增强
 
+## 按平台选择
+
+| 平台 | 分支 | 下载与使用 |
+|---|---|---|
+| 电脑 Windows | [pc 分支](https://github.com/yinzhoufang/sunshine-harmony-usb/tree/pc) | [下载电脑补丁](https://github.com/yinzhoufang/sunshine-harmony-usb/blob/pc/downloads/Sunshine-Harmony-USB-0.5.9-usb.2.zip?raw=true)，或查看控制面板源码 |
+| 鸿蒙平板 | [pad 分支](https://github.com/yinzhoufang/sunshine-harmony-usb/tree/pad) | 下载平板桥源码，用 DevEco Studio 配置自己的设备签名后构建安装 |
+
+平板分支当前提供源码，未提供通用签名 HAP。电脑补丁仍需已有兼容的 Sunshine 基地版。main 保留项目总览和原有下载入口。
+
 让已安装 **Sunshine 基地版** 的 Windows 电脑增加两个入口：在设备中心切换网络 / 鸿蒙数据线传输，在虚拟显示器页面手动开关虚拟屏。
 
 这是基于 [Sunshine Control Panel](https://github.com/qiin2333/sunshine-control-panel) **v0.5.9** 修改的社区补丁，不是完整 Sunshine 安装器，也不是 Sunshine 官方发行版。
@@ -9,7 +18,7 @@
 **[下载 Windows 补丁 0.5.9+usb.2](downloads/Sunshine-Harmony-USB-0.5.9-usb.2.zip?raw=true)** · [SHA-256 校验](downloads/SHA256SUMS.txt)
 
 1. 确认已安装适配的 Sunshine 基地版，控制面板版本为 **0.5.9 系列**，安装位置为 `C:\Program Files\Sunshine`。
-2. 下载上面的补丁 ZIP，先完整解压，再双击installer里的 `安装集成版.bat`。
+2. 下载上面的补丁 ZIP，先完整解压，再进入补丁的解压目录，双击其中的 `安装集成版.bat`。
 3. 接受 Windows 管理员授权。安装器会校验文件、备份原面板并处理程序占用。
 4. 安装完成后打开 Sunshine，按下面的说明使用新增入口。
 
