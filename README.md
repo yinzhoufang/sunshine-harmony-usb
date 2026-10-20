@@ -9,7 +9,7 @@
 **[下载 Windows 补丁 0.5.9+usb.2](downloads/Sunshine-Harmony-USB-0.5.9-usb.2.zip?raw=true)** · [SHA-256 校验](downloads/SHA256SUMS.txt)
 
 1. 确认已安装适配的 Sunshine 基地版，控制面板版本为 **0.5.9 系列**，安装位置为 `C:\Program Files\Sunshine`。
-2. 下载上面的补丁 ZIP，先完整解压，再双击 `安装集成版.bat`。
+2. 下载上面的补丁 ZIP，先完整解压，再双击installer里的 `安装集成版.bat`。
 3. 接受 Windows 管理员授权。安装器会校验文件、备份原面板并处理程序占用。
 4. 安装完成后打开 Sunshine，按下面的说明使用新增入口。
 
