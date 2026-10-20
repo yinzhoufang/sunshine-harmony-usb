@@ -4,6 +4,7 @@ export function harmonyConnectionState(status) {
   if (!status.enabled) return status.server_ready ? 'network' : 'hostOffline'
   if (!status.hdc_available) return 'hdcMissing'
   if (!status.device_connected) return 'waiting'
+  if (!status.healthy && status.relay_ready && status.mappings < 7) return 'recovering'
   return status.healthy ? 'connected' : 'incomplete'
 }
 

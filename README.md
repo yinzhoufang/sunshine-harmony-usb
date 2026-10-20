@@ -6,9 +6,17 @@
 
 本分支提供 Windows 安装补丁、控制面板与中继源码。平板端请前往 [pad 分支](https://github.com/yinzhoufang/sunshine-harmony-usb/tree/pad)，项目总览见 [main](https://github.com/yinzhoufang/sunshine-harmony-usb/tree/main)。
 
+## 0.5.9+usb.3：USB 映射自动恢复
+
+修复 USB 重连或 HDC 转发规则丢失后，模式仍开启却无法访问应用列表的问题。正式中继每约 2 秒在独立线程中检查已选平板，只补缺失的七条映射，不覆盖冲突规则；切换模式时暂停修复，切回网络模式后停止恢复。不会新增开机自启动。
+
+**从旧版升级：**结束当前串流，安装新版补丁，然后在设备中心关闭并重新开启一次鸿蒙数据线模式，使中继加载新逻辑。此操作会重启 Sunshine。平板桥无需重新安装，仍需保持分屏或悬浮窗可见。拔线导致的会话结束后，可能仍需手动重连 Moonlight。
+
+验证：正式中继在七条映射全部被删除后约 **1.31 秒**自行补齐；135 项前端测试、10 项恢复专项测试以及既有模式切换 / 回滚 / 所有权测试通过。60.2 秒真实低负载观察中，双隧道失联样本 0、新增丢弃 0、中继积压最大 0 B。平均流量约 2.4 Mbps，**不作为本版 40 Mbps 满负载或操作延迟验收**。详见 [恢复说明](docs/USB_RECOVERY.md)。
+
 ## 下载与安装
 
-**[下载 Windows 补丁 0.5.9+usb.2](downloads/Sunshine-Harmony-USB-0.5.9-usb.2.zip?raw=true)** · [SHA-256 校验](downloads/SHA256SUMS.txt)
+**[下载 Windows 补丁 0.5.9+usb.3](downloads/Sunshine-Harmony-USB-0.5.9-usb.3.zip?raw=true)** · [SHA-256 校验](downloads/SHA256SUMS.txt)
 
 1. 确认已安装适配的 Sunshine 基地版，控制面板版本为 **0.5.9 系列**，安装位置为 `C:\Program Files\Sunshine`。
 2. 下载上面的补丁 ZIP，先完整解压，再进入补丁的解压目录，双击其中的 `安装集成版.bat`。
