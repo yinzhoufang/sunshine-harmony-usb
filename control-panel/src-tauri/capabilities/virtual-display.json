@@ -1,0 +1,8 @@
+{
+  "$schema": "../gen/schemas/desktop-schema.json",
+  "identifier": "virtual-display-power",
+  "description": "Manual local virtual display control from the Virtual Display page.",
+  "windows": ["main"],
+  "local": true,
+  "permissions": ["allow-get-virtual-display-power", "allow-set-virtual-display-power"]
+}

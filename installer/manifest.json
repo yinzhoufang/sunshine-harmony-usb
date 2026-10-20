@@ -1,0 +1,8 @@
+{
+  "sunshine-gui.exe": "96eaf0d53a50b5274141cb4cbe916ce66163de948334afaf1283ce01ed8a485f",
+  "harmony-usb/common.py": "4a02ed3d3cb29e2eeddd3b324b820c47da5d9cf2c80959471b8078e5cc7b5fe4",
+  "harmony-usb/lan_mode.ps1": "2065ec8cfc7ac0f2fa92c2545555ffc193d74a910cf4b5af379675e2cfa3bd65",
+  "harmony-usb/relay.py": "e1f2f388931f62420efa7583ed58204479b93be939a37ac8585b6ee18a85cc71",
+  "harmony-usb/transport_mode.ps1": "4916c59e3645ba8c327d98d4aef476d354b7a5dd297db57458b85f97118fc5bf",
+  "harmony-usb/usb_mode.ps1": "a0de0eb56e3bc580929c0e2240de177cb6b72336710041adf74cd8b24164458b"
+}

@@ -1,0 +1,8 @@
+{
+  "$schema": "../gen/schemas/desktop-schema.json",
+  "identifier": "harmony-usb",
+  "description": "Switch the local host transport only from the bundled Device Hub.",
+  "windows": ["main"],
+  "local": true,
+  "permissions": ["allow-harmony-usb-get-status", "allow-harmony-usb-set-mode"]
+}

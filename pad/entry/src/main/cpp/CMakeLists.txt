@@ -1,0 +1,6 @@
+cmake_minimum_required(VERSION 3.5.0)
+project(usbtunnel)
+set(CMAKE_CXX_STANDARD 17)
+add_library(usbtunnel SHARED tunnel.cpp napi_init.cpp probe.cpp)
+target_compile_options(usbtunnel PRIVATE -O2 -Wall -Wextra)
+target_link_libraries(usbtunnel PUBLIC libace_napi.z.so libhilog_ndk.z.so)
