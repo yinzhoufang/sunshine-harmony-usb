@@ -20,12 +20,6 @@ cargo build --release --locked --manifest-path src-tauri/Cargo.toml
 
 安装器会请求 Windows 管理员授权，验证适配版本和清单后备份并更新面板。不要直接覆盖正在运行的 EXE。
 
-## HarmonyOS 平板桥
+## 配套平板端
 
-用 DevEco Studio 打开 `pad/`。本仓库去除了开发者私有签名配置、设备列表、私钥及证书，需要使用自己的开发者账号和设备重新配置签名。
-
-构建前安装项目所需的 HarmonyOS SDK、Native 工具链和依赖。通过 DevEco 管理依赖并构建；原生入口为 `entry/src/main/cpp/CMakeLists.txt`。如果命令行构建提示找不到 Java，请配置 `JAVA_HOME` 并将其 `bin` 加入 PATH。
-
-平板源码里的包名 `com.chenfang.usbtunnel` 同时用于电脑模式脚本检查桥是否已安装；若改包名，需要同步修改脚本。
-
-桥的设计、依赖和当前限制见 `pad/README.md`。请勿把个人生成的签名配置、证书、私钥、设备名单或已绑定开发设备的 HAP 提交到公开仓库。
+平板桥独立保存在 [pad 分支](https://github.com/yinzhoufang/sunshine-harmony-usb/tree/pad)，其工程位于该分支根目录。签名与构建步骤见 [平板构建说明](https://github.com/yinzhoufang/sunshine-harmony-usb/blob/pad/docs/BUILD.md)。

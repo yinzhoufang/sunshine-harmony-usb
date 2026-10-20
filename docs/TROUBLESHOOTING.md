@@ -30,7 +30,7 @@
 
 ## BRIDGE_MISSING
 
-平板还未安装 USB 隧道伴侣。需先按照 `pad/README.md` 自行签名构建并安装，再启用 USB 模式；只安装电脑补丁不够。
+平板还未安装 USB 隧道伴侣。需先按照 [pad 分支说明](https://github.com/yinzhoufang/sunshine-harmony-usb/tree/pad) 自行签名构建并安装，再启用 USB 模式；只安装电脑补丁不够。
 
 ## 配对能成功，但串流黑屏或之后无法重连
 

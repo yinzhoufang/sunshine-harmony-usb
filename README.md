@@ -1,15 +1,17 @@
-# Sunshine 鸿蒙 USB 串流与虚拟显示器增强
+# Sunshine 电脑端补丁与控制面板源码（pc 分支）
 
 让已安装 **Sunshine 基地版** 的 Windows 电脑增加两个入口：在设备中心切换网络 / 鸿蒙数据线传输，在虚拟显示器页面手动开关虚拟屏。
 
 这是基于 [Sunshine Control Panel](https://github.com/qiin2333/sunshine-control-panel) **v0.5.9** 修改的社区补丁，不是完整 Sunshine 安装器，也不是 Sunshine 官方发行版。
+
+本分支提供 Windows 安装补丁、控制面板与中继源码。平板端请前往 [pad 分支](https://github.com/yinzhoufang/sunshine-harmony-usb/tree/pad)，项目总览见 [main](https://github.com/yinzhoufang/sunshine-harmony-usb/tree/main)。
 
 ## 下载与安装
 
 **[下载 Windows 补丁 0.5.9+usb.2](downloads/Sunshine-Harmony-USB-0.5.9-usb.2.zip?raw=true)** · [SHA-256 校验](downloads/SHA256SUMS.txt)
 
 1. 确认已安装适配的 Sunshine 基地版，控制面板版本为 **0.5.9 系列**，安装位置为 `C:\Program Files\Sunshine`。
-2. 下载上面的补丁 ZIP，先完整解压，再双击installer里的 `安装集成版.bat`。
+2. 下载上面的补丁 ZIP，先完整解压，再进入补丁的解压目录，双击其中的 `安装集成版.bat`。
 3. 接受 Windows 管理员授权。安装器会校验文件、备份原面板并处理程序占用。
 4. 安装完成后打开 Sunshine，按下面的说明使用新增入口。
 
@@ -47,7 +49,7 @@
 
 HDC 可放在系统 PATH 中，或放到 `C:\Program Files\Sunshine\tools\harmony-usb\hdc.exe`。HDC 由用户通过华为官方开发工具获得，本项目不附带分发。Python 也需另行安装。
 
-平板桥仍是独立 App，**没有合并进 Moonlight**。仓库提供 [平板桥源码与构建说明](pad/README.md)，当前不提供适用于任意设备的通用已签名 HAP；开发签名包通常需要为使用者的设备重新配置签名。
+平板桥仍是独立 App，**没有合并进 Moonlight**。仓库提供 [平板桥源码与构建说明](https://github.com/yinzhoufang/sunshine-harmony-usb/tree/pad)，当前不提供适用于任意设备的通用已签名 HAP；开发签名包通常需要为使用者的设备重新配置签名。
 
 ## 传输方式
 
@@ -85,7 +87,7 @@ HDC 可放在系统 PATH 中，或放到 `C:\Program Files\Sunshine\tools\harmon
 | 目录 | 内容 |
 |---|---|
 | `control-panel/` | 修改后的 Tauri / Vue 控制面板完整源码 |
-| `pad/` | 平板桥 ArkTS + C++ / NAPI 源码，个人签名配置已去除 |
+| [pad 分支](https://github.com/yinzhoufang/sunshine-harmony-usb/tree/pad) | 平板桥源码与签名构建说明 |
 | `installer/` | Windows 补丁安装、恢复及运行时脚本源码 |
 | `downloads/` | 可直接解压安装的 Windows 补丁 ZIP 与校验值 |
 | `docs/` | 使用、协议、验证和故障排查说明 |
