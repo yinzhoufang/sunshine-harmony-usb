@@ -1,5 +1,22 @@
 # Sunshine 电脑端补丁与控制面板源码（pc 分支）
 
+## Channel 1.0.4 与安装包下载
+
+**[打开 Release 下载页面](https://github.com/yinzhoufang/sunshine-harmony-usb/releases/tag/v1.0.4)**
+
+| 文件 | 用途与安装要求 |
+| --- | --- |
+| `Channel-1.0.4-device-test.hap` | 鸿蒙平板端，当前已登记设备的调试签名测试包；不是任意设备通用包，也不是应用市场发布包。其他设备请从 pad 分支自行签名构建。 |
+| `Sunshine-Harmony-USB-0.5.9-usb.3-Setup.exe` | Windows x64 补丁安装器，要求已安装兼容的 Sunshine 基地版 GUI 0.5.9 系列；不是完整 Sunshine。 |
+| `Sunshine-Harmony-USB-0.5.9-usb.3.zip` | 同一 Windows 补丁的手动解压安装/恢复包。 |
+| `SHA256SUMS.txt` | 下载附件的 SHA-256 校验值。 |
+
+Channel 1.0.4 修复后台传输通知的类型和必需模板，每约 15 秒用真实收发量更新。单台 MatePad Pro 12.2 在“Channel 后台、最近任务上锁、Moonlight 全屏”条件下实测 960.19 秒：474 个连续样本、60 次通知成功、丢弃 0、双隧道断开样本 0、中继积压 0。平均实际流量约 2.86 Mbps，不能当作 40 Mbps 压力验收，也不保证所有设备无限后台运行。出现后台暂停时可使用分屏或悬浮窗。
+
+当前源码使用普通网络与后台运行权限，未加入特殊 ACL。测试包在本机可用不代表该后台使用场景已通过应用市场审核。详见 [1.0.4 说明](docs/CHANNEL_1.0.4.md)。
+
+Windows 功能仍为 0.5.9+usb.3，本次增加 EXE 安装入口；运行后按提示允许管理员授权。安装器会校验、备份并安装完整补丁，失败时显示错误。USB 串流另需 Python、华为官方 HDC、Channel 与 Moonlight。EXE 未配置代码签名证书。本项目不新增 DHCP 服务或开机自启动。
+
 让已安装 **Sunshine 基地版** 的 Windows 电脑增加两个入口：在设备中心切换网络 / 鸿蒙数据线传输，在虚拟显示器页面手动开关虚拟屏。
 
 这是基于 [Sunshine Control Panel](https://github.com/qiin2333/sunshine-control-panel) **v0.5.9** 修改的社区补丁，不是完整 Sunshine 安装器，也不是 Sunshine 官方发行版。
@@ -10,7 +27,7 @@
 
 修复 USB 重连或 HDC 转发规则丢失后，模式仍开启却无法访问应用列表的问题。正式中继每约 2 秒在独立线程中检查已选平板，只补缺失的七条映射，不覆盖冲突规则；切换模式时暂停修复，切回网络模式后停止恢复。不会新增开机自启动。
 
-**从旧版升级：**结束当前串流，安装新版补丁，然后在设备中心关闭并重新开启一次鸿蒙数据线模式，使中继加载新逻辑。此操作会重启 Sunshine。平板桥无需重新安装，仍需保持分屏或悬浮窗可见。拔线导致的会话结束后，可能仍需手动重连 Moonlight。
+**从旧版升级：**结束当前串流，安装新版补丁，然后在设备中心关闭并重新开启一次鸿蒙数据线模式，使中继加载新逻辑。此操作会重启 Sunshine。若升级 Channel 1.0.4，可按新版后台使用说明操作；旧桥仍需分屏或悬浮窗。拔线导致的会话结束后，可能仍需手动重连 Moonlight。
 
 验证：正式中继在七条映射全部被删除后约 **1.31 秒**自行补齐；135 项前端测试、10 项恢复专项测试以及既有模式切换 / 回滚 / 所有权测试通过。60.2 秒真实低负载观察中，双隧道失联样本 0、新增丢弃 0、中继积压最大 0 B。平均流量约 2.4 Mbps，**不作为本版 40 Mbps 满负载或操作延迟验收**。详见 [恢复说明](docs/USB_RECOVERY.md)。
 
@@ -57,7 +74,7 @@
 
 HDC 可放在系统 PATH 中，或放到 `C:\Program Files\Sunshine\tools\harmony-usb\hdc.exe`。HDC 由用户通过华为官方开发工具获得，本项目不附带分发。Python 也需另行安装。
 
-平板桥仍是独立 App，**没有合并进 Moonlight**。仓库提供 [平板桥源码与构建说明](https://github.com/yinzhoufang/sunshine-harmony-usb/tree/pad)，当前不提供适用于任意设备的通用已签名 HAP；开发签名包通常需要为使用者的设备重新配置签名。
+平板桥仍是独立 App，**没有合并进 Moonlight**。仓库提供 [平板桥源码与构建说明](https://github.com/yinzhoufang/sunshine-harmony-usb/tree/pad)，Release 提供设备受限的调试 HAP，其他设备仍需自行签名构建；不提供任意设备通用签名包。
 
 ## 传输方式
 
@@ -77,7 +94,7 @@ HDC 可放在系统 PATH 中，或放到 `C:\Program Files\Sunshine\tools\harmon
 
 - 已验证环境：Windows、Sunshine 基地版 / GUI 0.5.9、MatePad Pro 12.2（MRO-W00，HarmonyOS 6.1.1）。尚未在其他电脑和更多平板上验证。
 - 安装器目前只接受默认安装路径及 GUI 0.5.9 / `0.5.9+usb.N`。有同版本面板不代表其他 Sunshine 核心一定兼容，VDD 接口与驱动仍需满足条件。
-- 平板桥后台运行仍有系统冻结或回收的已知限制。当前建议以分屏或悬浮窗保持可见；不能保证长时间后台常驻。
+- Channel 1.0.4 在单台设备上通过后台上锁的 16 分钟观察；更多设备和更长时长仍待验证。后台暂停时可使用分屏或悬浮窗。
 - 传输仍经过 TCP，可能受重传、调试通道调度和系统负载影响；不承诺固定的端到端延迟。
 - 本项目没有提供虚拟显示驱动、完整 Sunshine、Python、HDC 或 Moonlight 安装器。
 - 上游控制面板更新可能覆盖本补丁，更新 Sunshine 后请重新确认版本兼容性。
