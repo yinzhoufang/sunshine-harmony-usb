@@ -1,0 +1,51 @@
+name: Publish Channel 1.0.4 installers
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/channel104-release.yml'
+      - 'installer/publish_release104.py'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: channel-1.0.4-release
+  cancel-in-progress: false
+
+jobs:
+  release:
+    runs-on: windows-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - name: Build and verify Windows installer
+        shell: pwsh
+        run: |
+          $ErrorActionPreference = 'Stop'
+          New-Item -ItemType Directory -Force release-assets | Out-Null
+          $zip = Join-Path $PWD 'release-assets/Sunshine-Harmony-USB-0.5.9-usb.3.zip'
+          Invoke-WebRequest 'https://raw.githubusercontent.com/yinzhoufang/sunshine-harmony-usb/pc/downloads/Sunshine-Harmony-USB-0.5.9-usb.3.zip' -OutFile $zip
+          if ((Get-FileHash $zip).Hash -ne '78AF881AC5E72B98F607A8720B3E8D0AAFB34EF4401292CA6C333E186469F182') { throw 'Unexpected Windows payload' }
+          Copy-Item downloads/Channel-1.0.4-device-test.hap release-assets/Channel-1.0.4-device-test.hap
+          if ((Get-FileHash release-assets/Channel-1.0.4-device-test.hap).Hash -ne 'B44C8DCCF914A5D256E2A28A9EA01D3F46BEE4BD9FB25329C2AC36C1A09432EF') { throw 'Unexpected HAP payload' }
+          $compiler = "$env:WINDIR\Microsoft.NET\Framework64\v4.0.30319\csc.exe"
+          $exe = Join-Path $PWD 'release-assets/Sunshine-Harmony-USB-0.5.9-usb.3-Setup.exe'
+          $source = Join-Path $PWD 'installer/ChannelWindowsSetup.cs'
+          & $compiler /nologo /target:winexe /platform:x64 /optimize+ /codepage:65001 /reference:System.Windows.Forms.dll /reference:System.IO.Compression.dll /reference:System.IO.Compression.FileSystem.dll ('/resource:' + $zip + ',payload.zip') ('/out:' + $exe) $source
+          if ($LASTEXITCODE -ne 0) { throw 'Installer compilation failed' }
+          $test = Join-Path $env:RUNNER_TEMP ('channel-extract-' + [guid]::NewGuid().ToString('N'))
+          $process = Start-Process -FilePath $exe -ArgumentList @('--extract-only', ('"' + $test + '"')) -Wait -PassThru -WindowStyle Hidden
+          if ($process.ExitCode -ne 0) { throw 'Installer extraction failed' }
+          $package = Join-Path $test 'Sunshine-Harmony-USB'
+          $manifest = Get-Content (Join-Path $package 'manifest.json') -Raw | ConvertFrom-Json
+          foreach ($item in $manifest.PSObject.Properties) {
+            if ((Get-FileHash -LiteralPath (Join-Path $package $item.Name)).Hash -ne $item.Value) { throw ('Runtime verification failed: ' + $item.Name) }
+          }
+      - name: Publish reviewed assets to GitHub Release
+        shell: pwsh
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: python installer/publish_release104.py

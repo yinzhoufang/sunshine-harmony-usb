@@ -1,0 +1,20 @@
+{
+  "version": "1.0.4",
+  "condition": "Channel background; recent-task lock enabled by user",
+  "requested_seconds": 960,
+  "elapsed_seconds": 960.19,
+  "stat_samples": 474,
+  "stat_span_seconds": 959.588,
+  "max_stat_gap_seconds": 2.099,
+  "notification_success_count": 60,
+  "notification_span_seconds": 957.571,
+  "max_notification_gap_seconds": 16.341,
+  "notification_or_task_failures": [],
+  "foreground_transitions": [],
+  "drop_delta": 0,
+  "disconnected_samples": 0,
+  "relay_buf_max": 0,
+  "mbps_avg": 2.8556962025316452,
+  "limitation": "Low dynamic live load; not a 40 Mbps performance qualification or an unlimited-runtime guarantee.",
+  "background_window_pass": true
+}

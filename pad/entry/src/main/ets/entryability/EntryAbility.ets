@@ -1,5 +1,6 @@
 import { AbilityConstant, UIAbility, Want, common } from '@kit.AbilityKit';
 import { window } from '@kit.ArkUI';
+import { backgroundSession } from '../bridge/BackgroundSession';
 import { BusinessError } from '@kit.BasicServicesKit';
 import { hilog } from '@kit.PerformanceAnalysisKit';
 
@@ -24,7 +25,20 @@ export default class EntryAbility extends UIAbility {
     });
   }
 
+  onForeground(): void {
+    hilog.info(DOMAIN, TAG, 'ability onForeground');
+    backgroundSession.onForeground(this.context);
+  }
+
+  onBackground(): void {
+    hilog.info(DOMAIN, TAG, 'ability onBackground');
+    backgroundSession.onBackground();
+  }
+
   onDestroy(): void {
+    backgroundSession.stop().catch((e: BusinessError) => {
+      hilog.warn(DOMAIN, TAG, 'background destroy cleanup failed: %{public}d', e.code);
+    });
     hilog.info(DOMAIN, TAG, 'ability onDestroy');
   }
 }
