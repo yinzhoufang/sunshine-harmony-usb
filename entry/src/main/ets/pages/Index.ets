@@ -6,6 +6,8 @@ import { TunnelBridge } from '../bridge/TunnelBridge';
 @Entry
 @Component
 struct Index {
+  @StorageLink('channelBackgroundActive') backgroundActive: boolean = false;
+  @StorageLink('channelBackgroundStatus') backgroundStatus: string = '后台连接保护未启用';
   @State running: boolean = false;
   @State busy: boolean = false;
   @State statsText: string = '上行 0 包 / 下行 0 包 / 丢弃 0';
@@ -80,7 +82,7 @@ struct Index {
 
   build() {
     Column({ space: 12 }) {
-      Text('USB 隧道伴侣')
+      Text('Channel')
         .fontSize(24)
         .fontWeight(FontWeight.Bold)
         .width('100%')
@@ -105,6 +107,11 @@ struct Index {
       .padding(12)
       .borderRadius(8)
       .backgroundColor('#F2F2F2')
+
+      Text(this.backgroundStatus)
+        .fontSize(13)
+        .fontColor(this.backgroundActive ? '#17834A' : '#9A5C00')
+        .width('100%')
 
       Text(this.statsText)
         .fontSize(13)

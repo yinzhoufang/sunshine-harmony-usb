@@ -13,8 +13,8 @@
  */
 
 import { socket } from '@kit.NetworkKit';
-import { common, wantAgent } from '@kit.AbilityKit';
-import { backgroundTaskManager } from '@kit.BackgroundTasksKit';
+import { common } from '@kit.AbilityKit';
+import { backgroundSession } from './BackgroundSession';
 import { BusinessError } from '@kit.BasicServicesKit';
 import { hilog } from '@kit.PerformanceAnalysisKit';
 import { util } from '@kit.ArkTS';
@@ -72,10 +72,11 @@ export class TunnelBridge {
     this.cfg = cfg;
     this.stats.reset();
 
-    await this.requestKeepAlive(context);
+    await backgroundSession.start(context);
     const result: number = nativeTunnel.start(cfg.tunnelHost, cfg.tunnelPort, cfg.controlTunnelPort,
       cfg.listenHost, cfg.serverUdpPorts, cfg.clientUdpPorts);
     if (result !== 0) {
+        await backgroundSession.stop();
         throw new Error('原生 UDP 监听失败 errno=' + result);
     }
     try {
@@ -142,29 +143,8 @@ export class TunnelBridge {
     this.upstreams = [];
     this.running = false;
     this.onState(false);
+    await backgroundSession.stop();
     this.log('已停止');
-  }
-
-  /**
-   * 申请长时任务（dataTransfer）。Moonlight 全屏后本 App 进后台，
-   * 没有这一句约 10 秒后会被系统冻结、隧道就断了。
-   */
-  private async requestKeepAlive(context: common.UIAbilityContext): Promise<void> {
-    try {
-      const info: wantAgent.WantAgentInfo = {
-        wants: [{ bundleName: 'com.chenfang.usbtunnel', abilityName: 'EntryAbility' }],
-        actionType: wantAgent.OperationType.START_ABILITY,
-        requestCode: 0,
-        actionFlags: [wantAgent.WantAgentFlags.UPDATE_PRESENT_FLAG]
-      };
-      const agent = await wantAgent.getWantAgent(info);
-      await backgroundTaskManager.startBackgroundRunning(
-        context, backgroundTaskManager.BackgroundMode.DATA_TRANSFER, agent);
-      this.log('已申请后台常驻（dataTransfer）');
-    } catch (e) {
-      const err = e as BusinessError;
-      this.log('后台常驻申请失败(' + err.code + ')，切到后台可能会被冻结');
-    }
   }
 
   // UDP 与双向隧道由原生工作线程持有，不向 ArkTS 逐包派发。
@@ -316,6 +296,8 @@ export class TunnelBridge {
     this.stats.downPkts = native.downPkts;
     this.stats.downBytes = native.downBytes;
     this.stats.dropped = native.dropped;
+    backgroundSession.updateTransfer(native.upBytes, native.downBytes,
+      native.videoConnected === 1 && native.controlConnected === 1);
     const pkts = this.stats.upPkts + this.stats.downPkts;
     const bytes = this.stats.upBytes + this.stats.downBytes;
     const dPkts = pkts - this.lastPkts;
